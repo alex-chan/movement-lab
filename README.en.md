@@ -6,7 +6,7 @@
 
 Movement Lab is a browser-based 3D exercise library with **50 exercises, 6 training categories and 8 languages**, covering bodyweight, barbells, dumbbells, cables and gym machines.
 
-**[Live demo](https://movement-lab-alex-chan.pages.dev/en/)** · [Bench press](https://movement-lab-alex-chan.pages.dev/en/exercises/bench/)
+**[Live demo](https://movement-lab.pages.dev/en/)** · [Bench press](https://movement-lab.pages.dev/en/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

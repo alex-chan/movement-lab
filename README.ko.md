@@ -6,7 +6,7 @@
 
 Movement Lab은 브라우저에서 실행하는 3D 운동 라이브러리입니다. **50개 동작, 6개 운동 부위, 8개 언어**를 제공하며 맨몸, 바벨, 덤벨, 케이블과 머신 운동을 살펴볼 수 있습니다.
 
-**[데모 열기](https://movement-lab-alex-chan.pages.dev/ko/)** · [바벨 벤치 프레스](https://movement-lab-alex-chan.pages.dev/ko/exercises/bench/)
+**[데모 열기](https://movement-lab.pages.dev/ko/)** · [바벨 벤치 프레스](https://movement-lab.pages.dev/ko/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

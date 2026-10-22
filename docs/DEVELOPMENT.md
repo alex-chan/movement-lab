@@ -66,12 +66,12 @@ The exported GLBs and Draco decoder resources are available to the app without d
 Set the real public root URL in the git-ignored file `web/.env.production`. For the currently deployed site:
 
 ```dotenv
-SITE_URL=https://movement-lab-alex-chan.pages.dev/
+SITE_URL=https://movement-lab.pages.dev/
 ```
 
 For a new deployment or custom domain, replace this value before rebuilding. `SITE_URL` also determines the base path, so include any intended subdirectory. Without it, production builds intentionally default to noindex and do not emit a public sitemap or canonical URL.
 
-Deploy only `web/dist/`. Do not upload the repository root, `.env` files, dependency directories or Blender source files. The current Cloudflare Pages project is `movement-lab-alex-chan`, published by **direct upload**. This repository is not connected to automatic Cloudflare builds.
+Deploy only `web/dist/`. Do not upload the repository root, `.env` files, dependency directories or Blender source files. The current Cloudflare Pages project is `movement-lab`, published by **direct upload**. This repository is not connected to automatic Cloudflare builds.
 
 The build generates 416 content pages (50 exercises, library and atlas routes across eight locales) plus eight localized error pages. Serve the generated HTML for each path and return HTTP 404 for unknown URLs; do not rewrite every request to the homepage. Verify deep links, model/Draco loading, language switching, canonical URLs, `robots.txt` and `sitemap.xml` on the public deployment.
 

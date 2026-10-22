@@ -6,7 +6,7 @@
 
 Movement Lab ofrece **50 ejercicios, 6 categorías y 8 idiomas** en el navegador, con peso corporal, barras, mancuernas, poleas y máquinas.
 
-**[Ver la aplicación](https://movement-lab-alex-chan.pages.dev/es/)** · [Press de banca](https://movement-lab-alex-chan.pages.dev/es/exercises/bench/)
+**[Ver la aplicación](https://movement-lab.pages.dev/es/)** · [Press de banca](https://movement-lab.pages.dev/es/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

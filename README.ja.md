@@ -6,7 +6,7 @@
 
 Movement Lab はブラウザーで使える 3D トレーニング動作ライブラリです。**50 種目・6 部位・8 言語**に対応し、自重、バーベル、ダンベル、ケーブル、マシンの動きを確認できます。
 
-**[デモを見る](https://movement-lab-alex-chan.pages.dev/ja/)** · [ベンチプレス](https://movement-lab-alex-chan.pages.dev/ja/exercises/bench/)
+**[デモを見る](https://movement-lab.pages.dev/ja/)** · [ベンチプレス](https://movement-lab.pages.dev/ja/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

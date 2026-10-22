@@ -6,7 +6,7 @@
 
 Movement Lab 是在浏览器中运行的 3D 健身动作库，提供 **50 个动作、6 个训练部位、8 种语言**，覆盖徒手、杠铃、哑铃、绳索与常见器械训练。
 
-**[在线体验](https://movement-lab-alex-chan.pages.dev/)** · [杠铃卧推](https://movement-lab-alex-chan.pages.dev/exercises/bench/)
+**[在线体验](https://movement-lab.pages.dev/)** · [杠铃卧推](https://movement-lab.pages.dev/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

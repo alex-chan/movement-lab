@@ -6,7 +6,7 @@
 
 Movement Lab propose **50 exercices, 6 catégories et 8 langues** dans le navigateur : poids du corps, barre, haltères, poulies et machines.
 
-**[Voir le site](https://movement-lab-alex-chan.pages.dev/fr/)** · [Développé couché](https://movement-lab-alex-chan.pages.dev/fr/exercises/bench/)
+**[Voir le site](https://movement-lab.pages.dev/fr/)** · [Développé couché](https://movement-lab.pages.dev/fr/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

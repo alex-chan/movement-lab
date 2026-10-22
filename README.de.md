@@ -6,7 +6,7 @@
 
 Movement Lab ist eine 3D-Übungsbibliothek im Browser mit **50 Übungen, 6 Trainingsbereichen und 8 Sprachen**. Sie umfasst Eigengewichtsübungen, Langhanteln, Kurzhanteln, Kabelzüge und Trainingsgeräte.
 
-**[Live-Demo](https://movement-lab-alex-chan.pages.dev/de/)** · [Bankdrücken](https://movement-lab-alex-chan.pages.dev/de/exercises/bench/)
+**[Live-Demo](https://movement-lab.pages.dev/de/)** · [Bankdrücken](https://movement-lab.pages.dev/de/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 

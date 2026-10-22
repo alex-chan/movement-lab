@@ -6,7 +6,7 @@
 
 Movement Lab é uma biblioteca 3D no navegador com **50 exercícios, 6 categorias e 8 idiomas**, incluindo peso corporal, barras, halteres, cabos e máquinas.
 
-**[Acessar demonstração](https://movement-lab-alex-chan.pages.dev/pt/)** · [Supino com barra](https://movement-lab-alex-chan.pages.dev/pt/exercises/bench/)
+**[Acessar demonstração](https://movement-lab.pages.dev/pt/)** · [Supino com barra](https://movement-lab.pages.dev/pt/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 
