@@ -9,7 +9,7 @@ export async function loadFittedSurface(anatomy, rig) {
   let geometry
   gltf.scene.traverse(node => { if (node.isMesh) geometry = node.geometry })
   if (!geometry?.attributes.skinWeight || !geometry.attributes.skinIndex) throw new Error('Fitted surface has no skin binding')
-  const material = new THREE.MeshStandardMaterial({ vertexColors: true, roughness: .68, metalness: 0, side: THREE.DoubleSide })
+  const material = new THREE.MeshPhysicalMaterial({ vertexColors: true, roughness: .94, metalness: 0, specularIntensity: .15, clearcoat: 0, envMapIntensity: .25, side: THREE.DoubleSide })
   const mesh = new THREE.SkinnedMesh(geometry, material)
   mesh.name = 'Fitted fitness surface';mesh.frustumCulled = false
   mesh.castShadow = true;mesh.receiveShadow = true

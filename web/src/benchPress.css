@@ -98,3 +98,6 @@ body.bench-mode { background: #090f18; }
   .press-instructions { top: 75px; right: 16px; bottom: 150px; width: 330px; padding: 18px; }
   .bench-readout .press-phase-cue { min-height: 36px; line-height: 1.7; margin-top: 12px; }
 }
+
+body[data-exercise-surface="fitted"] .role-primary { background:#b94f5a; }
+body[data-exercise-surface="fitted"] .role-assist { background:#e4aaa1; }
