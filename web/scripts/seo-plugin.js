@@ -9,7 +9,7 @@ export function seoPlugin({siteUrl='',base='/'}) {
     const parsed=new URL(url,'http://localhost'),route=resolveRoute(url,base),meta=metadata(route)
     const indexable=!!siteUrl&&route.type!=='missing'&&!parsed.searchParams.has('preview')
     const canonical=siteUrl?new URL(route.path,siteUrl).href:''
-    html=html.replace(/<html\b[^>]*>/,`<html lang="${LANGUAGES.find(l=>l.id===route.locale).tag}">`)
+    html=html.replace(/<html\b[^>]*>/,`<html lang="${LANGUAGES.find(l=>l.id===route.locale).tag}" data-page-type="${route.type}">`)
       .replace(/<!-- SEO_HEAD_START -->[\s\S]*?<!-- SEO_HEAD_END -->/,'')
       .replace(/<title>[\s\S]*?<\/title>/,'')
       .replace(/<meta\s+(?:name="(?:description|robots|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/g,'')

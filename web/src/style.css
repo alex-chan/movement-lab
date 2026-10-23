@@ -306,3 +306,8 @@ html[lang=hi] .boot-lead, html[lang=hi] #bubble-text, html[lang=hi] #info-body p
 #seo-content article { padding:16px 0; border-bottom:1px solid #263c49; }
 body:has(> #seo-content):not(:has(> #viewer-shell:not([hidden]))) { height:auto; overflow:visible; }
 html:has(#seo-content) { height:auto; overflow-y:auto; }
+
+/* Exercise pages reveal only the posed animation, never the atlas boot sequence.
+   Static teaching content remains readable when JavaScript is disabled. */
+html.js[data-page-type="exercise"] #seo-content { display:none; }
+body.bench-mode:not([data-exercise-ready]) #scene { visibility:hidden; }

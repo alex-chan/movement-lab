@@ -11,7 +11,11 @@ import { COMMON } from './commonExercises.js'
 import { resolveRoute } from './routes.js'
 const exerciseId = resolveRoute(location.href, import.meta.env.BASE_URL).exercise?.id
 const benchRequested = exerciseId === 'bench' || exerciseId in COMMON
-if (benchRequested) document.body.classList.add('bench-mode')
+if (benchRequested) {
+  document.body.classList.add('bench-mode')
+  sfx.enabled = false
+  window.speechSynthesis?.cancel()
+}
 import { t, setLang, getLang } from './i18n.js'
 
 const $ = (s) => document.querySelector(s)
@@ -30,7 +34,7 @@ const ICONS = {
 }
 
 // ---------------- layers panel ----------------
-const DEFAULT_VISIBLE = { skeleton: true }
+const DEFAULT_VISIBLE = { skeleton: !benchRequested }
 const layerUI = {}
 const list = $('#layer-list')
 for (const key of ['skin', 'muscles', 'organs', 'arteries', 'veins', 'nerves', 'skeleton']) {
@@ -89,7 +93,7 @@ const bootLog = $('#boot-log'), bootFill = $('#boot-fill'), bootBtn = $('#boot-s
 const logLine = (txt, ok) => { const d = document.createElement('div'); d.innerHTML = `&gt; ${txt} ${ok ? '<span class="ok">[OK]</span>' : ''}`; bootLog.replaceChildren(d) }
 const bootOrder = benchRequested ? ['skeleton', 'muscles', ...(exerciseId === 'bench' && new URLSearchParams(location.search).get('surface') === 'experimental' ? ['skin'] : [])] : ['skeleton', 'organs', 'arteries', 'veins', 'muscles', 'skin', 'nerves']
 let loadedCount = 0, booted = false
-document.body.classList.add('intro')
+if (!benchRequested) document.body.classList.add('intro')
 const intro = new Intro(anatomy, {
   onStage: (from, to) => {
     const name = (ks) => ks.map((k) => layerLabel(k).toUpperCase()).join(' + ')
@@ -114,7 +118,7 @@ anatomy.addEventListener('layerloaded', (e) => {
   bootFill.style.width = (loadedCount / bootOrder.length) * 100 + '%'
   countUp($('#stat-parts'), Object.values(anatomy.layers).reduce((n, L) => n + (L.loaded ? L.meshes.length : 0), 0))
   logLine(t('landing.logLoaded', { layer: layerLabel(e.detail.key).toUpperCase(), n: e.detail.count }), true)
-  if (e.detail.key === 'skeleton' && !booted) {
+  if (!benchRequested && e.detail.key === 'skeleton' && !booted) {
     setReady()
     intro.start()
     setTimeout(() => doctor.walkOn(), 600)
@@ -128,7 +132,10 @@ function enterApp(then) {
   booted = true
   intro.stop()
   document.body.classList.remove('intro')
-  $('#boot').classList.add('gone'); play.boot()
+  $('#boot').classList.add('gone')
+  // Exercise viewers enter directly, without the atlas welcome, skeleton or audio.
+  if (benchRequested) return
+  play.boot()
   applyLayers({ skeleton: 1 })
   anatomy.resetView()
   if (doctor.state !== 'walking' && !doctor.docked) doctor.walkOn()
@@ -145,7 +152,7 @@ tourBtn.addEventListener('click', () => enterApp(() => tours.start('blood')))
       .catch((e) => logLine(t('landing.logFailed', { layer: layerLabel(k).toUpperCase(), err: e?.message || 'network error' })))
   }
   // Never leave visitors stuck on the landing page, even if the skeleton could not be downloaded.
-  if (bootBtn.disabled) { setReady(); intro.start(); doctor.walkOn() }
+  if (!benchRequested && bootBtn.disabled) { setReady(); intro.start(); doctor.walkOn() }
   if (benchRequested) { enterApp(); if (exerciseId === 'bench') startBenchPress(anatomy); else startStandingExercise(anatomy, exerciseId) }
 })()
 
@@ -382,6 +389,7 @@ const brain = new Brain({
   zoom: (f) => anatomy.zoom(f),
 })
 const doctor = new Doctor($('#doctor-canvas'), { anatomy, brain, goToEntry })
+if (benchRequested) doctor.voiceOn = false
 window.doctor = doctor
 if (!booted && !anatomy.layers.skeleton?.loaded) doctor.hideOffstage()   // he walks on once the landing page is ready
 
@@ -409,6 +417,7 @@ function applyUIStrings() {
   for (const el of document.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml)
   for (const el of document.querySelectorAll('[data-i18n-ph]')) el.placeholder = t(el.dataset.i18nPh)
   for (const el of document.querySelectorAll('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle)
+  $('#mute').textContent = t(doctor.voiceOn ? 'ui.voiceOn' : 'ui.voiceOff')
 }
 let langBusy = false
 async function setLanguage(code) {
@@ -451,7 +460,7 @@ function loop() {
   anatomy.updateExercise?.()
   anatomy.update()
   anatomy.updateExerciseLabels?.()
-  doctor.update()
+  if (!benchRequested) doctor.update()
   requestAnimationFrame(loop)
 }
 loop()

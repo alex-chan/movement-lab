@@ -88,3 +88,7 @@ Preserve upstream history and attribution. Read [CREDITS.md](../CREDITS.md), inc
 The bench-press viewer defaults to the original muscle anatomy, including its original library previews. The outer-surface prototype is excluded from normal viewing and loading. It can be inspected explicitly at `/exercises/bench/?surface=experimental`; it is not ready for normal use.
 
 The atlas skin has a garment-like appearance and its transferred weights stretch between the upper arms and back during the press. It needs a fitted surface and carefully authored shoulder deformation before release. `web/src/exerciseSurface.js` transfers colors and bind-space weights from nearby muscle triangles, sharing results at coincident vertices. `npm run check:surface` validates transfer mechanics, normalized weights and seam consistency only; passing these checks does not validate the appearance or anatomy during motion. Other exercises retain their existing models.
+
+## Direct exercise entry
+
+Exercise routes skip the anatomy-atlas intro and doctor greeting, disable automatic speech and UI sounds, and reveal the canvas only after the exercise has been posed. JavaScript-enabled exercise pages hide the static SEO text during startup; the instructions remain in the HTML for crawlers and visitors without JavaScript. The anatomy atlas retains its separate introduction and controls.

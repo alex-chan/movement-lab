@@ -24,7 +24,14 @@ if (route.type === 'missing') {
   if (content) content.innerHTML = '<h1>页面未找到</h1><p>这个动作尚不存在。</p><a href="./">返回动作库</a>'
 } else if (isViewer) {
   const shell = document.querySelector('#viewer-shell')
-  await import('./main.js')
+  if (route.type === 'exercise') document.body.classList.add('bench-mode')
+  try {
+    await import('./main.js')
+  } catch (error) {
+    // Keep the static instructions usable if the viewer module cannot load.
+    document.documentElement.classList.remove('js')
+    throw error
+  }
   document.querySelector('#seo-content')?.remove()
   if (shell) shell.hidden = false
 } else {
