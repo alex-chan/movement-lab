@@ -82,3 +82,9 @@ More details: [SEO notes](../web/README-SEO.md) and [i18n notes](../web/README-I
 Keep changes focused on fitness demonstrations, useful instruction content and accessible browsing. Report exercise IDs, browser details and reproducible steps for visual problems. Document limitations rather than claiming measured muscle activation or validated biomechanics.
 
 Preserve upstream history and attribution. Read [CREDITS.md](../CREDITS.md), including the noncommercial kidney-model exception, before redistribution or commercial use.
+
+## Bench-press surface prototype
+
+The bench-press viewer defaults to a matte white outer surface with projected muscle-role colors. Its toolbar switches between the surface, the original muscle anatomy and bones. Other exercises retain their previous anatomy models while this prototype is evaluated.
+
+The skin GLB is loaded only for the bench press. `web/src/exerciseSurface.js` projects colors from the underlying muscle geometry and transfers bind-space weights from nearby muscle triangles, sharing results at coincident patch vertices. This improves exterior coverage without claiming a watertight mesh, physical skin simulation or fully corrected finger grips. Run `npm run check:surface` from `web/` to validate transfers, normalized weights and seam consistency. Inspect shoulders and wrists throughout the motion before extending the prototype to additional exercises.

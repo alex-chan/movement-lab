@@ -1,5 +1,8 @@
 // Columns: English, Spanish, French, German, Portuguese, Japanese, Korean.
 export const UI = {
+'解剖视图':['Anatomy view','Vista anatómica','Vue anatomique','Anatomieansicht','Vista anatômica','解剖表示','해부 보기'],
+'白模视图':['Surface view','Vista de superficie','Vue de surface','Oberflächenansicht','Vista de superfície','表面表示','표면 보기'],
+'返回外观':['Return to model','Volver al modelo','Revenir au modèle','Zurück zum Modell','Voltar ao modelo','モデルに戻る','모델로 돌아가기'],
 '网站导航':['Site navigation','Navegación','Navigation','Seitennavigation','Navegação','サイトナビゲーション','사이트 탐색'],
 'Movement Lab 动作库首页':['Movement Lab home','Inicio de Movement Lab','Accueil Movement Lab','Movement Lab Startseite','Início do Movement Lab','Movement Lab ホーム','Movement Lab 홈'],
 '健身动作库：3D动作演示与发力肌群':['Fitness library: 3D exercises and muscle roles','Biblioteca: ejercicios 3D y músculos','Bibliothèque : exercices 3D et muscles','Fitnessbibliothek: 3D-Übungen und Muskeln','Biblioteca: exercícios 3D e músculos','種目一覧：3D動作と筋肉の役割','운동 라이브러리: 3D 동작과 근육 역할'],

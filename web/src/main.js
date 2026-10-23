@@ -87,7 +87,7 @@ function refreshLayerStates() {
 // The 3D body loads behind the landing text; intro.js turns it and peels it layer by layer while it streams in.
 const bootLog = $('#boot-log'), bootFill = $('#boot-fill'), bootBtn = $('#boot-start'), tourBtn = $('#boot-tour')
 const logLine = (txt, ok) => { const d = document.createElement('div'); d.innerHTML = `&gt; ${txt} ${ok ? '<span class="ok">[OK]</span>' : ''}`; bootLog.replaceChildren(d) }
-const bootOrder = benchRequested ? ['skeleton', 'muscles'] : ['skeleton', 'organs', 'arteries', 'veins', 'muscles', 'skin', 'nerves']
+const bootOrder = benchRequested ? ['skeleton', 'muscles', ...(exerciseId === 'bench' ? ['skin'] : [])] : ['skeleton', 'organs', 'arteries', 'veins', 'muscles', 'skin', 'nerves']
 let loadedCount = 0, booted = false
 document.body.classList.add('intro')
 const intro = new Intro(anatomy, {

@@ -3,6 +3,7 @@ import * as THREE from 'three'
 import './benchPress.css'
 import { markBenchMuscles } from './benchMuscles.js'
 import { addBenchInstructions } from './benchInstructions.js'
+import { createExerciseSurface } from './exerciseSurface.js'
 
 const V = (x, y, z) => new THREE.Vector3(x, y, z)
 const smooth = (a, b, v) => THREE.MathUtils.smoothstep(v, a, b)
@@ -150,7 +151,7 @@ export function createRig(anatomy) {
     }
     return { barHeight, barZ }
   }
-  return { pose, joints, aim }
+  return { pose, joints, aim, skeleton }
 }
 
 function equipment(scene) {
@@ -242,12 +243,14 @@ export function startBenchPress(anatomy) {
       <button id="press-play">暂停</button><button id="press-reset">重新开始</button>
       <label>速度 <select id="press-speed" aria-label="动作速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></label>
       <span class="bench-divider"></span><button data-press-view="perspective" class="active">斜侧视角</button><button data-press-view="side">侧面</button><button data-press-view="head">头侧</button>
-      <span class="bench-divider"></span><button id="press-layer">查看骨骼</button>
+      <span class="bench-divider"></span><button id="press-surface">解剖视图</button><button id="press-layer">查看骨骼</button>
     </nav><p class="bench-hint">拖动旋转 · 滚轮缩放 <span>／</span> 动作示意 · 未模拟真实负重和软组织力学</p>`
   const locale=browserLocale()
   if(locale!=='zh')panel.querySelector('h1').textContent=localizedExercise({id:'bench',muscles:[],equipment:[]},locale).title
   document.body.append(panel)
   const muscleMarks = markBenchMuscles(anatomy, panel)
+  const surface = createExerciseSurface(anatomy, rig)
+  if (surface) anatomy.setVisible('muscles', false)
   const instructions = addBenchInstructions(panel)
   const preview = new URLSearchParams(location.search).has('preview')
   if (preview) panel.style.display = 'none'
@@ -261,10 +264,23 @@ export function startBenchPress(anatomy) {
   panel.querySelectorAll('[data-press-view]').forEach(b => { b.onclick = () => { view(b.dataset.pressView); panel.querySelectorAll('[data-press-view]').forEach(x => x.classList.toggle('active', x === b)) } })
   panel.querySelector('#press-layer').onclick = e => {
     boneView = !boneView
-    anatomy.setVisible('muscles', !boneView); anatomy.setVisible('skeleton', boneView)
-    e.target.textContent = boneView ? '查看肌肉' : '查看骨骼'
+    anatomy.setVisible('muscles', !boneView && !surfaceMode); anatomy.setVisible('skeleton', boneView)
+    surface?.setVisible(!boneView && surfaceMode)
+    e.target.textContent = boneView ? '返回外观' : '查看骨骼'
     muscleMarks.setVisible(!boneView)
   }
+  let surfaceMode = !!surface
+  const surfaceButton = panel.querySelector('#press-surface')
+  surfaceButton.hidden = !surface
+  surfaceButton.onclick = () => {
+    surfaceMode = !surfaceMode; boneView = false
+    anatomy.setVisible('skeleton', false); anatomy.setVisible('muscles', !surfaceMode)
+    surface.setVisible(surfaceMode); muscleMarks.setVisible(true)
+    surfaceButton.textContent = surfaceMode ? '解剖视图' : '白模视图'
+    panel.querySelector('#press-layer').textContent = '查看骨骼'
+    document.body.dataset.exerciseSurface = surfaceMode ? 'skin' : 'muscles'
+  }
+  document.body.dataset.exerciseSurface = surfaceMode ? 'skin' : 'muscles'
   function poseFrame() {
     const time = elapsed % 5
     let extension, phase
