@@ -249,7 +249,9 @@ export function startBenchPress(anatomy) {
   if(locale!=='zh')panel.querySelector('h1').textContent=localizedExercise({id:'bench',muscles:[],equipment:[]},locale).title
   document.body.append(panel)
   const muscleMarks = markBenchMuscles(anatomy, panel)
-  const surface = createExerciseSurface(anatomy, rig)
+  // The atlas skin deforms poorly at the shoulders; keep it out of normal exercise views.
+  const surface = new URLSearchParams(location.search).get('surface') === 'experimental'
+    ? createExerciseSurface(anatomy, rig) : null
   if (surface) anatomy.setVisible('muscles', false)
   const instructions = addBenchInstructions(panel)
   const preview = new URLSearchParams(location.search).has('preview')
@@ -266,7 +268,7 @@ export function startBenchPress(anatomy) {
     boneView = !boneView
     anatomy.setVisible('muscles', !boneView && !surfaceMode); anatomy.setVisible('skeleton', boneView)
     surface?.setVisible(!boneView && surfaceMode)
-    e.target.textContent = boneView ? '返回外观' : '查看骨骼'
+    e.target.textContent = boneView ? (surface ? '返回外观' : '查看肌肉') : '查看骨骼'
     muscleMarks.setVisible(!boneView)
   }
   let surfaceMode = !!surface

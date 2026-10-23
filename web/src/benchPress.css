@@ -98,4 +98,3 @@ body.bench-mode { background: #090f18; }
   .press-instructions { top: 75px; right: 16px; bottom: 150px; width: 330px; padding: 18px; }
   .bench-readout .press-phase-cue { min-height: 36px; line-height: 1.7; margin-top: 12px; }
 }
-.bench-mode .bench-toolbar { max-width: min(980px, calc(100vw - 24px)); width: max-content; }
