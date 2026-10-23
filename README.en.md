@@ -1,6 +1,6 @@
 # Movement Lab · 3D Exercise Demonstrations
 
-[简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+[简体中文](README.zh-CN.md) · [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 **See how an exercise moves. Understand which muscles take part.**
 
@@ -19,7 +19,7 @@ Movement Lab is a browser-based 3D exercise library with **50 exercises, 6 train
 - Play, pause, restart, timeline scrubbing and 0.5× / 1× / 1.5× playback.
 - Setup instructions, movement phases, common mistakes and references.
 - Search by exercise, muscle or equipment; filter by training category.
-- Chinese, English, Spanish, French, German, Portuguese, Japanese and Korean.
+- Chinese, English, Spanish, French, German, Portuguese, Japanese and Korean. On first visit, the site follows your browser’s preferred supported language; manual language selections are remembered. Unsupported browser languages fall back to English.
 - Static Three.js + Vite app: no custom backend, account or AI API key required.
 
 ## Exercise coverage

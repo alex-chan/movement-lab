@@ -6,6 +6,7 @@ import { LANGUAGES, localizedExercise, localizedConfig, translateUI, localePath,
 import { EXERCISES, filterExercises } from '../src/exercises.js'
 import { COMMON } from '../src/commonExercises.js'
 import { resolveRoute } from '../src/routes.js'
+import { preferredLocale, localeRedirect } from '../src/localePreference.js'
 import { metadata, staticContent, structuredData, routeList } from './seo-data.js'
 for(const dictionary of [UI,TITLES,TERMS,GUIDE])for(const[key,row]of Object.entries(dictionary)){
  assert.equal(row.length,LANGUAGES.length-1,`${key}: locale count`)
@@ -40,3 +41,24 @@ assert.equal(new Set(routeList).size,(EXERCISES.length+2)*LANGUAGES.length)
 assert(filterExercises('cuadriceps','all',EXERCISES.map(e=>localizedExercise(e,'es'))).length>0,'accent-insensitive search')
 assert.equal(resolveRoute('https://test.invalid/app/de/exercises/cable-row/','/app/').exercise.id,'cable-row')
 console.log(`i18n passed: ${LANGUAGES.length} languages × ${EXERCISES.length} exercises; dictionaries, guides, muscles, search, routes and metadata.`)
+
+// First-visit negotiation, remembered choices, and shared localized links.
+for (const [languages, saved, expected] of [
+  [['en-US'], undefined, 'en'], [['pt-BR'], undefined, 'pt'],
+  [['zh-TW'], undefined, 'zh'], [['JA-jp'], undefined, 'ja'],
+  [['it-IT', 'fr-CA', 'en-US'], undefined, 'fr'],
+  [['ru-RU'], undefined, 'en'], [[], undefined, 'en'],
+  [['en-US'], 'zh', 'zh'], [['zh-CN'], 'de', 'de'],
+  [['ko-KR'], 'invalid', 'ko'],
+]) assert.equal(preferredLocale(languages, saved), expected)
+const origin = 'https://test.invalid'
+assert.equal(localeRedirect(origin+'/', {languages:['en-US']}), origin+'/en/')
+assert.equal(localeRedirect(origin+'/exercises/bench/?surface=experimental#form', {languages:['pt-BR']}), origin+'/pt/exercises/bench/?surface=experimental#form')
+assert.equal(localeRedirect(origin+'/?exercise=squat', {languages:['ja-JP']}), origin+'/ja/exercises/squat/?exercise=squat')
+assert.equal(localeRedirect(origin+'/app/anatomy/?quality=high#body', {base:'/app/',languages:['de-DE']}), origin+'/app/de/anatomy/?quality=high#body')
+assert.equal(localeRedirect(origin+'/exercises/bench/', {languages:['en-US'],saved:'zh'}), null)
+assert.equal(localeRedirect(origin+'/exercises/absent/', {languages:['en-US']}), null)
+for (const {id} of LANGUAGES) {
+  assert.equal(localeRedirect(origin+`/${id}/exercises/bench/`, {languages:['en-US'],saved:'fr'}), null)
+}
+console.log('Language preference checks passed: browser language order, regional variants, English fallback, saved choices, explicit URLs, legacy links and subdirectories.')

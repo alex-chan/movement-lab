@@ -1,6 +1,6 @@
 # Developing Movement Lab
 
-Movement Lab's primary product is a static 3D fitness exercise library. The inherited anatomy atlas is retained as a secondary route. Start with the [English README](../README.en.md) or [Chinese README](../README.md).
+Movement Lab's primary product is a static 3D fitness exercise library. The inherited anatomy atlas is retained as a secondary route. Start with the [English README](../README.md) or [Chinese README](../README.zh-CN.md).
 
 ## Runtime and commands
 
@@ -92,3 +92,7 @@ The atlas skin has a garment-like appearance and its transferred weights stretch
 ## Direct exercise entry
 
 Exercise routes skip the anatomy-atlas intro and doctor greeting, disable automatic speech and UI sounds, and reveal the canvas only after the exercise has been posed. JavaScript-enabled exercise pages hide the static SEO text during startup; the instructions remain in the HTML for crawlers and visitors without JavaScript. The anatomy atlas retains its separate introduction and controls.
+
+## Language selection
+
+On an unprefixed library, exercise or atlas URL, the site uses a saved manual language selection first, then the first supported language in `navigator.languages` (with `navigator.language` as a fallback), then English. Regional variants map to their supported base language, including `zh-TW` to the available Simplified Chinese translation. Explicit language prefixes take precedence and are never redirected by browser preferences. Locale redirects preserve query strings, fragments and deployment subdirectories.

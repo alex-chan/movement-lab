@@ -1,41 +1,41 @@
-# Movement Lab · 3D 健身动作演示
+# Movement Lab · 3D Exercise Demonstrations
 
-[简体中文](README.md) · [English](README.en.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
+[简体中文](README.zh-CN.md) · [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Português](README.pt.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
-**看清动作怎么做，也看懂哪些肌肉参与。**
+**See how an exercise moves. Understand which muscles take part.**
 
-Movement Lab 是在浏览器中运行的 3D 健身动作库，提供 **50 个动作、6 个训练部位、8 种语言**，覆盖徒手、杠铃、哑铃、绳索与常见器械训练。
+Movement Lab is a browser-based 3D exercise library with **50 exercises, 6 training categories and 8 languages**, covering bodyweight, barbells, dumbbells, cables and gym machines.
 
-**[在线体验](https://movement-lab.pages.dev/)** · [杠铃卧推](https://movement-lab.pages.dev/exercises/bench/)
+**[Live demo](https://movement-lab.pages.dev/en/)** · [Bench press](https://movement-lab.pages.dev/en/exercises/bench/)
 
 ![Movement Lab — 50 exercises](docs/screenshots/movement-library.png)
 
 ![3D bench press preview](web/public/previews/bench.png)
 
-## 主要功能
+## Features
 
-- 可旋转、缩放、切换视角的 3D 动作演示。
-- 深红标记主要发力肌群，浅红标记辅助或稳定肌群，其他部位为白模。
-- 播放、暂停、重新开始、进度拖动和 0.5×／1×／1.5× 慢放与加速。
-- 准备姿势、分阶段要领、常见错误与参考资料。
-- 按部位筛选，按动作、肌肉或器械搜索。
-- 简体中文、英语、西班牙语、法语、德语、葡萄牙语、日语和韩语。
-- Three.js + Vite 纯静态网站，无需自建后端、账号或 AI API 密钥。
+- Interactive 3D demonstrations with rotation, zoom and preset camera views.
+- Dark red for primary muscles; light red for assisting or stabilizing muscles; white for other areas.
+- Play, pause, restart, timeline scrubbing and 0.5× / 1× / 1.5× playback.
+- Setup instructions, movement phases, common mistakes and references.
+- Search by exercise, muscle or equipment; filter by training category.
+- Chinese, English, Spanish, French, German, Portuguese, Japanese and Korean. On first visit, the site follows your browser’s preferred supported language; manual language selections are remembered. Unsupported browser languages fall back to English.
+- Static Three.js + Vite app: no custom backend, account or AI API key required.
 
-## 动作范围
+## Exercise coverage
 
-| 部位 | 数量 | 示例 |
+| Category | Count | Examples |
 |---|---:|---|
-| 胸部 | 8 | 卧推、俯卧撑、地板飞鸟 |
-| 背部 | 8 | 引体向上、高位下拉、绳索划船 |
-| 肩部 | 6 | 哑铃肩推、侧平举、器械肩推 |
-| 手臂 | 6 | 哑铃弯举、锤式弯举、绳索下压 |
-| 腿部 | 17 | 深蹲、硬拉、箭步蹲、器械腿弯举 |
-| 核心 | 5 | 平板支撑、死虫式、鸟狗式 |
+| Chest | 8 | Bench press, push-up, floor fly |
+| Back | 8 | Pull-up, lat pulldown, cable row |
+| Shoulders | 6 | Dumbbell press, lateral raise, machine press |
+| Arms | 6 | Dumbbell curl, hammer curl, cable pushdown |
+| Legs | 17 | Squat, deadlift, lunge, seated leg curl |
+| Core | 5 | Plank, dead bug, bird dog |
 
-## 本地运行
+## Run locally
 
-需要 Node.js **20.19+（20.x）或 22.12+**，以及支持 WebGL2 的浏览器。
+Use Node.js **20.19+ on 20.x, or 22.12+**, and a WebGL2-capable browser.
 
 ```bash
 git clone https://github.com/alex-chan/movement-lab.git
@@ -44,11 +44,11 @@ npm ci
 npm run dev
 ```
 
-打开终端显示的地址，默认 `http://localhost:5173/`。模型和 Draco 解码资源已包含，无需下载 Blender 源文件。请通过 HTTP 服务访问，不要直接双击 HTML 文件。
+Open the printed URL, normally `http://localhost:5173/`. Exported models and Draco resources are included; Blender sources are not needed. Serve over HTTP rather than opening HTML files directly.
 
-## 检查与部署
+## Validate and deploy
 
-在 `web/` 目录执行：
+From `web/`:
 
 ```bash
 npm run check:movements
@@ -58,14 +58,14 @@ npm run check:seo
 npm run preview
 ```
 
-将实际公开网址写入本地 `web/.env.production` 的 `SITE_URL` 后再构建；该文件不提交到 Git。将 `web/dist/` 部署到 Cloudflare Pages 等静态托管服务，保留独立页面和真实 404 响应。当前线上版本使用直接上传，GitHub 提交不会自动发布。
+Set `SITE_URL` to the actual public URL in the git-ignored local file `web/.env.production`. Deploy `web/dist/` to Cloudflare Pages or another static host, retaining individual pages and real 404 responses. The live site currently uses direct upload; GitHub pushes do not deploy automatically.
 
-构建包含静态教学文字、多语言元信息与结构化数据。配置 `SITE_URL` 后生成 canonical、hreflang 和 sitemap；未配置时默认 noindex。详见 [开发指南](docs/DEVELOPMENT.md)、[SEO 配置](web/README-SEO.md) 和 [国际化说明](web/README-I18N.md)。
+The build includes static instructions, localized metadata and structured data. Setting `SITE_URL` also enables canonical URLs, hreflang and a sitemap; without it, builds default to noindex. See the [developer guide](docs/DEVELOPMENT.md); the [SEO](web/README-SEO.md) and [localization](web/README-I18N.md) notes are in Chinese.
 
-## 演示范围与来源
+## Limits and credits
 
-动画为程序化教学示意，未模拟真实负重或软组织力学。颜色表示肌群作用，**不是实测激活强度**；白色部位也可能参与稳定。内容不能代替个体化训练指导或医疗建议。
+Animations are procedural illustrations without real-load or soft-tissue simulation. Colors show muscle roles, **not measured activation**; white areas may still stabilize. This does not replace individual coaching or medical advice.
 
-原人体图谱保留在 `/anatomy/`，作为补充工具。其知识内容和讲解仍为英语／印地语，不属于动作库八语言翻译范围。
+The inherited atlas at `/anatomy/` is a secondary tool. Its knowledge content and narration remain in English/Hindi, outside the exercise library's eight-language coverage.
 
-基于 [SeemaBansal1/3d-human-body-anatomy](https://github.com/SeemaBansal1/3d-human-body-anatomy) 扩展，保留原作者提交历史及 [原图谱文档](README-ANATOMY.md)。模型来自 Z-Anatomy／BodyParts3D，保留各自的署名与相同方式共享许可。原器官图层包含 **CC BY-NC 4.0 肾脏模型，商业发布前必须移除或替换**。详见 [来源与许可](CREDITS.md)。
+Based on [SeemaBansal1/3d-human-body-anatomy](https://github.com/SeemaBansal1/3d-human-body-anatomy), with upstream history and [original documentation](README-ANATOMY.md) preserved. Z-Anatomy / BodyParts3D models retain their attribution and share-alike terms. The inherited organs layer includes a **CC BY-NC 4.0 kidney model that must be removed or replaced before commercial release**. See [credits and license scope](CREDITS.md).
