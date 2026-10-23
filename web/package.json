@@ -10,7 +10,9 @@
     "check:seo": "node scripts/check-seo.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
     "check:movements": "node scripts/check-movements.mjs --assets",
-    "check:surface": "node scripts/check-surface.mjs"
+    "check:surface": "node scripts/check-surface.mjs",
+    "build:surface": "node scripts/build-fitted-surface.mjs && node scripts/pose-surface-for-remesh.mjs && python3 scripts/remesh-fitted-surface.py && node scripts/bind-remeshed-surface.mjs",
+    "check:fitted-surface": "node scripts/check-fitted-surface.mjs"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
     "three-mesh-bvh": "^0.9.15"
   },
   "devDependencies": {
+    "draco3dgltf": "^1.5.9",
     "vite": "^8.3.1"
   }
 }

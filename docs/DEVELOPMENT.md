@@ -83,11 +83,13 @@ Keep changes focused on fitness demonstrations, useful instruction content and a
 
 Preserve upstream history and attribution. Read [CREDITS.md](../CREDITS.md), including the noncommercial kidney-model exception, before redistribution or commercial use.
 
-## Bench-press surface prototype
+## Fitted bench-press surface preview
 
-The bench-press viewer defaults to the original muscle anatomy, including its original library previews. The outer-surface prototype is excluded from normal viewing and loading. It can be inspected explicitly at `/exercises/bench/?surface=experimental`; it is not ready for normal use.
+The normal viewer and library previews retain the original muscle anatomy. Open `/exercises/bench/?surface=fitted` locally to compare the new fitted exterior with the anatomy and bones. This is a bench-only preview; it is not a clinical model, soft-tissue simulation or a final hand-grip solution.
 
-The atlas skin has a garment-like appearance and its transferred weights stretch between the upper arms and back during the press. It needs a fitted surface and carefully authored shoulder deformation before release. `web/src/exerciseSurface.js` transfers colors and bind-space weights from nearby muscle triangles, sharing results at coincident vertices. `npm run check:surface` validates transfer mechanics, normalized weights and seam consistency only; passing these checks does not validate the appearance or anatomy during motion. Other exercises retain their existing models.
+The surface is an adaptation of the attributed atlas assets, not a new material on the old skin panels. The builder welds region boundaries, adds contour edges, fits the torso and limbs towards their muscle envelopes, and assigns region-aware weights. It remeshes a solid body in an A-pose with separated arms to prevent accidental arm-to-torso joins, then returns the result to the shared exercise bind space. The face and extremities derive from the original skin atlas. A featureless pelvic volume replaces the old garment hem. The runtime loads the generated `public/models/fitness-surface.glb` with Draco compression; visitors do not run this reconstruction.
+
+To regenerate, install `scripts/requirements-surface.txt` in a Python virtual environment, activate it, then run `npm run build:surface` from `web/`. Intermediate files stay in ignored `web/work/surface/`. The standard website build does not need Python. Run `npm run check:fitted-surface` to check the actual asset's topology, joint order, normalized weights, torso influences and deformation across 21 press poses. Inspect all phases visually as well; numeric checks do not certify anatomical realism.
 
 ## Direct exercise entry
 

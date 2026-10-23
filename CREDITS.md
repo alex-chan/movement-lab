@@ -12,6 +12,8 @@ This document records provenance and inherited notices. It does not grant a new 
 - **BodyParts3D:** [database and project information](https://dbarchive.biosciencedbc.jp/en/bodyparts3d/), © The Database Center for Life Science, CC BY-SA 2.1 JP. This is the underlying source acknowledged by Z-Anatomy and the original repository.
 - **Kidney exception:** the inherited organs layer contains a kidney model by **Lissie Cowley**, licensed **CC BY-NC 4.0**, as documented in the upstream README. Remove or replace this model before commercial release, including an advertising-supported release. Its noncommercial restriction remains relevant even though the main entry point now focuses on fitness.
 
+`web/public/models/fitness-surface.glb` is a Movement Lab adaptation of the attributed muscle and skin atlas assets: surface fitting, continuous exterior remeshing, new skin weights and exercise-role vertex colors. It retains the applicable atlas share-alike attribution and license terms. No newly sourced human asset is bundled for this preview.
+
 Retain attribution, license links and modification notices when redistributing the applicable models. See [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/), [CC BY-SA 2.1 JP](https://creativecommons.org/licenses/by-sa/2.1/jp/) and [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/).
 
 ## Libraries and fonts

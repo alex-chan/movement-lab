@@ -1,52 +1,47 @@
 import assert from 'node:assert/strict'
-import * as THREE from 'three'
-import { createExerciseSurface } from '../src/exerciseSurface.js'
-
-// A translated surface must inherit the donor's rig and color, including
-// duplicate vertices across separate atlas patches and the rigid head region.
-const root = new THREE.Group(), bones = [new THREE.Bone(), new THREE.Bone(), new THREE.Bone()]
-bones.forEach(bone => root.add(bone)); root.updateMatrixWorld(true)
-const skeleton = new THREE.Skeleton(bones)
-const donor = new THREE.BufferGeometry()
-donor.setAttribute('position', new THREE.Float32BufferAttribute([0, 0, 0, 1, 0, 0, 0, 1, 0], 3))
-donor.setIndex([0, 1, 2])
-donor.setAttribute('skinIndex', new THREE.Uint16BufferAttribute([0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0], 4))
-donor.setAttribute('skinWeight', new THREE.Float32BufferAttribute([.25, .75, 0, 0, .25, .75, 0, 0, .25, .75, 0, 0], 4))
-const muscle = new THREE.Mesh(donor, new THREE.MeshStandardMaterial({ color: '#961c38' }))
-const skinGroup = new THREE.Group(); root.add(skinGroup)
-const patch = (name, points) => {
-  const geometry = new THREE.BufferGeometry()
-  geometry.setAttribute('position', new THREE.Float32BufferAttribute(points, 3)); geometry.setIndex([0, 1, 2])
-  const mesh = new THREE.Mesh(geometry); mesh.userData.zname = name; skinGroup.add(mesh); return mesh
+import * as T from 'three'
+import { readModel } from './lib/read-model.mjs'
+import { readSurface } from './lib/read-surface.mjs'
+import { createRig } from '../src/exerciseRig.js'
+const {geometry,stats}=await readSurface()
+assert(stats.closedRemesh,'Surface must be rebuilt as a closed mesh')
+const edges=new Map(),index=geometry.index
+for(let i=0;i<index.count;i+=3)for(let j=0;j<3;j++){
+  const a=index.getX(i+j),b=index.getX(i+(j+1)%3),key=a<b?`${a},${b}`:`${b},${a}`
+  edges.set(key,(edges.get(key)||0)+1)
 }
-const skin = { loaded: true, group: skinGroup, meshes: [
-  patch('skin A', [.1, .1, .02, .2, .1, .02, .1, .2, .02]),
-  patch('skin B', [.1, .1, .02, .2, .1, .02, .1, .2, .02]),
-  patch('head', [0, 1.6, 0, .05, 1.6, 0, 0, 1.65, 0]),
-  patch('Hairs of head', [0, 1.7, 0, .05, 1.7, 0, 0, 1.75, 0]),
-] }
-const anatomy = { layers: { muscles: { meshes: [muscle] }, skin }, setVisible(key, value) { this.layers[key].group.visible = value } }
-const surface = createExerciseSurface(anatomy, { skeleton, joints: { head: { index: 2 } } })
-assert.equal(surface.vertexCount, 9)
-assert.equal(skin.meshes.length, 3)
-assert.equal(skinGroup.children.length, 3, 'hair geometry must be removed, not merely hidden until the next isolation pass')
-const point = new THREE.Vector3()
-for (const mesh of skin.meshes) {
-  assert(mesh.isSkinnedMesh)
-  const weights = mesh.geometry.attributes.skinWeight.array
-  for (let i = 0; i < weights.length; i += 4) assert(Math.abs(weights.slice(i, i + 4).reduce((a, b) => a + b, 0) - 1) < 1e-6)
+assert([...edges.values()].every(n=>n===2),'Every edge must have exactly two incident faces, without panel cracks')
+const [muscles,skeleton]=await Promise.all(['muscles','skeleton'].map(n=>readModel(`public/models/${n}.glb`)))
+const root=new T.Group();for(const m of [...muscles,...skeleton])root.add(m)
+const rig=createRig({root,layers:{muscles:{meshes:muscles},skeleton:{meshes:skeleton}}})
+assert.deepEqual(stats.jointOrder,Object.keys(rig.joints))
+const skin=new T.SkinnedMesh(geometry,new T.MeshBasicMaterial());skin.bind(rig.skeleton,new T.Matrix4());root.add(skin)
+const p=geometry.attributes.position,w=geometry.attributes.skinWeight,k=geometry.attributes.skinIndex
+const points=new Float32Array(p.count*3),v=new T.Vector3(),a=new T.Vector3(),b=new T.Vector3()
+let maxShoulderStretch=0,maxShoulderElongation=0,maxLongEdgeStretch=0
+for(let i=0;i<p.count;i++){
+  assert(Math.abs([0,1,2,3].reduce((sum,j)=>sum+w.array[i*4+j],0)-1)<1e-5)
+  for(let j=0;j<4;j++){assert(w.array[i*4+j]>=0);assert(k.array[i*4+j]<rig.skeleton.bones.length)}
+  if(p.getY(i)>1.0&&p.getY(i)<1.24&&Math.abs(p.getX(i))<.16){
+    for(let j=0;j<4;j++)if(w.array[i*4+j]>.05)assert(!/forearm|hand|fingers|tips/.test(stats.jointOrder[k.array[i*4+j]]),'Lower torso must not follow the forearm or hand')
+  }
 }
-assert.deepEqual([...skin.meshes[0].geometry.attributes.skinWeight.array], [...skin.meshes[1].geometry.attributes.skinWeight.array])
-assert(Math.abs(skin.meshes[0].geometry.attributes.color.getX(0) - muscle.material.color.r) < 1e-6)
-for (let step = 0; step <= 20; step++) {
-  bones[1].position.z = step * .01; bones[2].position.x = step * .005
-  root.updateMatrixWorld(true)
-  skin.meshes[0].getVertexPosition(0, point)
-  assert(Math.abs(point.z - (.02 + bones[1].position.z * .75)) < 1e-6)
-  skin.meshes[2].getVertexPosition(0, point)
-  assert(Math.abs(point.x - bones[2].position.x) < 1e-6)
-  assert([point.x, point.y, point.z].every(Number.isFinite))
+for(let step=0;step<=20;step++){
+  rig.pose(step/20);root.updateMatrixWorld(true)
+  for(let i=0;i<p.count;i++){skin.getVertexPosition(i,v);assert(v.toArray().every(Number.isFinite));v.toArray(points,i*3)}
+  for(const key of edges.keys()){
+    const [i,j]=key.split(',').map(Number)
+    if(p.getY(i)<1.26||p.getY(i)>1.44)continue
+    const rest=a.fromBufferAttribute(p,i).distanceTo(b.fromBufferAttribute(p,j));if(rest<.0005)continue
+    const posed=a.fromArray(points,i*3).distanceTo(b.fromArray(points,j*3))
+    maxShoulderStretch=Math.max(maxShoulderStretch,posed/rest)
+    maxShoulderElongation=Math.max(maxShoulderElongation,posed-rest)
+    if(rest>.004)maxLongEdgeStretch=Math.max(maxLongEdgeStretch,posed/rest)
+  }
 }
-surface.setVisible(false); assert.equal(skinGroup.visible, false)
-surface.setVisible(true); assert.equal(skinGroup.visible, true)
-console.log('Surface checks passed: weight transfer, normalization, patch seams, colors, head binding, hair removal and visibility.')
+console.log({vertices:p.count,triangles:index.count/3,closedEdges:edges.size,poses:21,maxShoulderStretch,maxShoulderElongation,maxLongEdgeStretch})
+// Very short marching-cubes edges can have large ratios for millimetre motion.
+// Bound physical elongation as well as the ratio on edges over 4 mm.
+assert(maxShoulderElongation<.03,'Shoulder edges must not elongate by more than 3 cm')
+assert(maxLongEdgeStretch<6,'Shoulder edge loops must not stretch into long membranes')
+console.log('Fitted surface passed: closed topology, normalized binding, no forearm influence on torso and finite deformation through the press.')
